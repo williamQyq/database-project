@@ -33,7 +33,7 @@ create table students (
 	stu_id int,
 	grade char (10),
 	primary key (stu_id),
-	constraint students_id foreign key (stu_id) references users(uid)
+	constraint students_id foreign key (stu_id) references users(uid) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 create table parents (
