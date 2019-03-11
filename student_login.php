@@ -9,14 +9,14 @@
         $result = mysqli_query($con,$query_select_user);
         $row  = mysqli_fetch_array($result);
         if(is_array($row)) {
-            $_SESSION["id"] = $row[stu_id];
-            $_SESSION["name"] = $row[name];
+            $_SESSION["id"] = $row[0];
+            $_SESSION["name"] = $row[1];
         } else {
             $message = "Invalid Username or Password!";
         }
     }
     if(isset($_SESSION["id"])) {
-        header("Location:index_student.php");
+        header("Location:student_index.php");
     }
 ?>
 
@@ -27,7 +27,7 @@
 <body>
 <form name="frmUser" method="post" action="">
 <div><?php if($message!="") { echo $message; } ?></div>
-<h3>Enter Student Login Details</h3>
+<h3>Student Login</h3>
  Username:<br>
  <input type="text" name="username">
  <br>
