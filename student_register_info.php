@@ -52,4 +52,4 @@
   mysqli_close($myconnection);
 
 ?>
-<a href="register.html">go to login</a>
+<a href="home.html">go to login</a>
