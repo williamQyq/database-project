@@ -9,8 +9,8 @@
         $result = mysqli_query($con,$query_select_user);
         $row  = mysqli_fetch_array($result);
         if(is_array($row)) {
-            $_SESSION["id"] = $row[0];
-            $_SESSION["name"] = $row[1];
+            $_SESSION["id"] = $row[uid];
+            $_SESSION["name"] = $row[name];
         } else {
             $message = "Invalid Username or Password!";
         }

@@ -10,7 +10,7 @@
 <?php
     if($_SESSION["name"]) {
 ?>
-    Welcome <?php echo $_SESSION["name"]; ?>. Click here to <a href="logout.php" tite="Logout">Logout</a>.
+    Welcome <?php echo $_SESSION["name"]; ?>. Click here to <a href="student_logout.php" tite="studentLogout">Logout</a>.
 <?php
     }else {
 ?>
