@@ -10,7 +10,9 @@
 <?php
     if($_SESSION["name"]) {
 ?>
-    Welcome <?php echo $_SESSION["name"]; ?>. Click here to <a href="student_logout.php" tite="studentLogout">Logout</a>.
+    Welcome <?php echo $_SESSION["name"]; ?>.<br>
+    Your grade is <?php echo $_SESSION["grade"];?>.<br>
+    Click here to <a href="student_logout.php" tite="studentLogout">Logout</a>.<br><br>
 <?php
     }else {
 ?>
@@ -18,5 +20,34 @@
 <?php    
     }
 ?>
+
+<table>
+    <tr>
+        <th>User Type </th>
+        <th></th>
+        <th>Action</th>
+    </tr>
+    <tr>
+        <td>User</td>
+        <td>Profile</td>
+        <td><a href=student_prof.php title="studentProfile">Change Your Profile</a></td>
+    </tr>
+    <tr>
+        <td>Student</td>
+        <td>Section</td>
+        <td><a href=student_view_Sec.php title="studentSec">View Section</a></td>
+    </tr>
+    <tr>
+        <td>Mentor</td>
+        <td>Mentor</td>
+        <td><a href=student_view_Mtor.php title="studentMtor">View Mentor</a></td>
+    </tr>
+    <tr>
+        <td>Mentee</td>
+        <td>Mentee</td>
+        <td><a href=student_view_Mtee.php title="studentMtee">View Mentee</a></td>
+    </tr>
+</table>
+
 </body>
 </html>

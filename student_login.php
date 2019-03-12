@@ -17,6 +17,17 @@
         } else {
             $message = "Invalid Username or Password!";
         }
+        mysqli_free_result($result);
+
+        $query_get_stu_grade ="SELECT grade FROM students, users WHERE uid = stu_id AND uid IN (SELECT uid FROM users WHERE username = '" . $_POST["username"] . "' and password = '" . $_POST["password"] . "')";
+        $result = mysqli_query($con,$query_get_stu_grade);
+        $row = mysqli_fetch_array($result);
+        if(is_array($row)) {
+            $_SESSION["grade"] = $row[grade];
+        } else {
+            $_SESSION["grade"] = "NAN";
+        }
+        mysqli_free_result($result);
     }
     if(isset($_SESSION["id"])) {
         header("Location:student_index.php");
