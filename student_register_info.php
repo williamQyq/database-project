@@ -1,18 +1,22 @@
 <?php
-    //create short variable names
-    $email = $_POST['email'];
-    $parentEmail = $_POST['parentEmail'];
-    $password = $_POST['password'];
-    $role = $_POST['role'];
-    $grade = $_POST['grade'];
-    $name = $_POST['name'];
-    $phoneNumber = $_POST['phoneNumber'];
-    
-    //build connection
-    $myconnection = mysqli_connect('localhost', 'root', '')
-    or die ('Could not connect: ' . mysql_error());
+    include 'config.php';
 
-    $mydb = mysqli_select_db ($myconnection, 'db2') or die ('Could not select database');
+    //start session
+    session_start();
+
+    //create short variable names
+    $email = $_SESSION['email'];
+    $parentEmail = $_SESSION['parentEmail'];
+    $password = $_SESSION['password'];
+    $role = $_SESSION['role'];
+    $grade = $_SESSION['grade'];
+    $name = $_SESSION['name'];
+    $phoneNumber = $_SESSION['phoneNumber'];
+    
+    //build connection no password
+    $myconnection = mysqli_connect($host, $username) or die ('Could not connect: ' . mysql_error());
+
+    $mydb = mysqli_select_db ($myconnection, $database) or die ('Could not select database');
 
     $query_insert_user = "INSERT INTO users (username, password, name, emailAddress, phoneNumber) VALUES ('$email', '$password', '$name', '$email', '$phoneNumber')";
     $result = mysqli_query($myconnection, $query_insert_user) or die ('Query failed: ' . mysql_error());
@@ -52,4 +56,13 @@
   mysqli_close($myconnection);
 
 ?>
+
+<?php
+// remove all session variables
+session_unset(); 
+
+// destroy the session 
+session_destroy(); 
+?>
+
 <a href="home.html">go to login</a>

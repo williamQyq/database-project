@@ -1,9 +1,12 @@
 <?php
+    //include config for db connection
+    include 'config.php';
+    
     session_start();
     $message="";
     if(count($_POST)>0) {
-        $con = mysqli_connect('localhost', 'root', '') or die('Unable To connect');
-        $mydb = mysqli_select_db($con, 'db2') or die ('could not select database');
+        $con = mysqli_connect($host, $username) or die('Unable To connect');
+        $mydb = mysqli_select_db($con, $database) or die ('could not select database');
 
         $query_select_user = "SELECT * FROM users WHERE username = '" . $_POST["username"] . "' and password = '" . $_POST["password"] . "'";
         $result = mysqli_query($con,$query_select_user);

@@ -20,10 +20,10 @@ drop table if exists users;
 
 create table users (
 	uid int NOT NULL AUTO_INCREMENT,
-	username char(20),
+	username char(50),
 	password char(20),
 	name char(20),
-	emailAddress char (30),
+	emailAddress char (50),
 	phoneNumber char(10),
 	primary key (uid) 
 );
