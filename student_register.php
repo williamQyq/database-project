@@ -78,5 +78,6 @@
                 </tr>
             </table>
         </form>
+        <a href="home.html">go to home</a>
     </body>
 </html>
