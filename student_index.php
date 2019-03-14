@@ -21,12 +21,7 @@
     }
 ?>
 
-<table>
-    <tr>
-        <th>User Type </th>
-        <th></th>
-        <th>Action</th>
-    </tr>
+<table border="1">
     <tr>
         <td>User</td>
         <td>Profile</td>
@@ -35,17 +30,17 @@
     <tr>
         <td>Student</td>
         <td>Section</td>
-        <td><a href=student_view_Sec.php title="studentSec">View Section</a></td>
+        <td><a href=student_view_sec.php title="studentSec">View Section</a></td>
     </tr>
     <tr>
         <td>Mentor</td>
         <td>Mentor</td>
-        <td><a href=student_view_Mtor.php title="studentMtor">View Mentor</a></td>
+        <td><a href=student_view_mtor.php title="studentMtor">View Mentor</a></td>
     </tr>
     <tr>
         <td>Mentee</td>
         <td>Mentee</td>
-        <td><a href=student_view_Mtee.php title="studentMtee">View Mentee</a></td>
+        <td><a href=student_view_mtee.php title="studentMtee">View Mentee</a></td>
     </tr>
 </table>
 
