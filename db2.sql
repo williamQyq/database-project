@@ -72,8 +72,8 @@ create table courses (
 	cid int,
 	title char(20),
 	description text,
-	mtees_req int,
-	mtor_req int,
+	mtees_req char(20),
+	mtor_req char(20),
 	primary key (cid, title)
 );
 
