@@ -73,7 +73,7 @@ create table courses (
 	title char(20),
 	description text,
 	mtees_req char(20),
-	mtor_req char(20),
+	mtors_req char(20),
 	primary key (cid, title)
 );
 

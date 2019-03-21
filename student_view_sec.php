@@ -4,9 +4,7 @@
 
     $con = mysqli_connect($host, $username) or die('Unable To connect');
     $mydb = mysqli_select_db($con, $database) or die ('could not select database');
-    $query_view_sec = "SELECT courses.tilte, sections_belong.name, sections_belong.startDate, sections_belong.endDate 
-    From courses, sections_belong";
-
+    $query_view_sec = "SELECT * FROM courses NATURAL JOIN sections_belong";
     
 ?>
 <html>
@@ -48,7 +46,26 @@
         $result = mysqli_query($con,$query_view_sec);
         if($result != NULL) {
             while($row = mysqli_fetch_array($result)) {
-                echo "<tr> <td>".$row["title"]."</td>".$row["name"]."</tr>";
+                echo '<tr> 
+                        <td>'.$row["title"].'</td>
+                        <td>'.$row["name"].'</td>
+                        <td>'.$row["startDate"].'</td>
+                        <td>'.$row["endDate"].'</td>
+                        <td>NA</td>
+                        <td>'.$row["capacity"].'</td>
+                        <td>'.$row["mtors_req"].'</td>
+                        <td>'.$row["mtees_req"].'</td> 
+                        <td>NA</td>
+                        <td>NA</td>
+                        <td><form action= "section_add_mentor.php">
+                                <input type="submit" value="add mentor"/>
+                            </form>
+                        </td>
+                        <td><form action= "section_add_mentee.php">
+                                <input type="submit" value="add mentee"/>
+                            </form>
+                        </td>
+                    </tr>';
             }
         }
     ?>
