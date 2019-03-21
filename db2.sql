@@ -39,41 +39,41 @@ create table students (
 create table parents (
 	par_id int,
 	primary key (par_id),
-	constraint parents_id foreign key (par_id) references users(uid)
+	constraint parents_id foreign key (par_id) references users(uid) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 create table custody (
 	par_id int,
 	stu_id int,
 	primary key (par_id, stu_id),
-	constraint custody_pid foreign key (par_id) references parents(par_id),
-	constraint custody_sid foreign key (stu_id) references students(stu_id)
+	constraint custody_pid foreign key (par_id) references parents(par_id) ON UPDATE CASCADE ON DELETE CASCADE,
+	constraint custody_sid foreign key (stu_id) references students(stu_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 create table mentees (
 	mtee_id int,
 	primary key (mtee_id),
-	foreign key (mtee_id) references students(stu_id)
+	foreign key (mtee_id) references students(stu_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 create table mentors (
 	mtor_id int,
 	primary key (mtor_id),
-	constraint mentors_id foreign key (mtor_id) references students(stu_id)
+	constraint mentors_id foreign key (mtor_id) references students(stu_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 create table moderators (
 	mdtor_id int,
 	primary key (mdtor_id),
-	constraint moderators_id foreign key (mdtor_id) references parents(par_id)
+	constraint moderators_id foreign key (mdtor_id) references parents(par_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 create table courses (
 	cid int,
 	title char(20),
 	description text,
-	mtees_req char(20),
-	mtor_req char(20),
+	mtees_req int,
+	mtor_req int,
 	primary key (cid, title)
 );
 
@@ -86,7 +86,7 @@ create table sections_belong (
 	endDate DATE,
 	capacity int,
 	primary key (cid, title, sec_id),
-	constraint sections_course foreign key (cid, title) references courses(cid, title) on delete cascade
+	constraint sections_course foreign key (cid, title) references courses(cid, title) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 create table sessions (
@@ -99,7 +99,7 @@ create table sessions (
 	date datetime,
 	capacity int,
 	primary key(cid,title,sec_id,ses_id),
-	constraint sessions_section foreign key (cid, title, sec_id) references sections_belong(cid, title, sec_id)
+	constraint sessions_section foreign key (cid, title, sec_id) references sections_belong(cid, title, sec_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 create table enroll (
@@ -107,24 +107,24 @@ create table enroll (
 	title char(20),
 	sec_id int not null,
 	mtee_id int not null,
-	constraint enroll_sec_id foreign key (cid, title, sec_id) references sections_belong(cid, title, sec_id) on delete cascade,
-	constraint enroll_mtee_id foreign key (mtee_id) references mentees(mtee_id) on delete cascade
+	constraint enroll_sec_id foreign key (cid, title, sec_id) references sections_belong(cid, title, sec_id) ON UPDATE CASCADE ON DELETE CASCADE,
+	constraint enroll_mtee_id foreign key (mtee_id) references mentees(mtee_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 create table teach (
 	cid int,
 	title char(20),
 	mtor_id int,
 	sec_id int,
-	constraint teach_section_id foreign key (cid, title, sec_id) references sections_belong(cid, title, sec_id),
-	constraint teach_mtor_id foreign key (mtor_id) references mentors(mtor_id)
+	constraint teach_section_id foreign key (cid, title, sec_id) references sections_belong(cid, title, sec_id) ON UPDATE CASCADE ON DELETE CASCADE,
+	constraint teach_mtor_id foreign key (mtor_id) references mentors(mtor_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 create table moderate (
 	cid int,
 	title char(20),
 	mdtor_id int,
 	sec_id int,
-	constraint moderate_sec_id foreign key (cid, title, sec_id) references sections_belong(cid, title, sec_id),
-	constraint  moderate_mdtor_id foreign key (mdtor_id) references moderators(mdtor_id)
+	constraint moderate_sec_id foreign key (cid, title, sec_id) references sections_belong(cid, title, sec_id) ON UPDATE CASCADE ON DELETE CASCADE,
+	constraint  moderate_mdtor_id foreign key (mdtor_id) references moderators(mdtor_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 create table participate (
@@ -137,8 +137,8 @@ create table participate (
 	startTime datetime,
 	endTime datetime,
 	constraint participate_sec_ses foreign key (cid, title, sec_id, ses_id) references sessions(cid, title, sec_id, ses_id),
-	constraint participate_mtee foreign key (mtee_id) references mentees(mtee_id),
-	constraint participate_mtor foreign key (mtor_id) references mentors(mtor_id)
+	constraint participate_mtee foreign key (mtee_id) references mentees(mtee_id) ON UPDATE CASCADE ON DELETE CASCADE,
+	constraint participate_mtor foreign key (mtor_id) references mentors(mtor_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 create table studyMaterials (
@@ -160,7 +160,7 @@ create table timeSlot (
 	endTime time,
 	weekDay char(10),
 	primary key (slot_id),
-	foreign key (cid, title, sec_id) references sections_belong(cid, title, sec_id)
+	foreign key (cid, title, sec_id) references sections_belong(cid, title, sec_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
@@ -171,14 +171,14 @@ create table textUsed (
 	ses_id int,
 	sm_id int,
 	primary key(cid, title, sec_id, ses_id, sm_id),
-	constraint textUsed_session foreign key (cid, title, sec_id, ses_id) references sessions(cid, title, sec_id, ses_id),
-	constraint textUsed_studyMaterial foreign key (sm_id) references studyMaterials(sm_id)
+	constraint textUsed_session foreign key (cid, title, sec_id, ses_id) references sessions(cid, title, sec_id, ses_id) ON UPDATE CASCADE ON DELETE CASCADE,
+	constraint textUsed_studyMaterial foreign key (sm_id) references studyMaterials(sm_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 create table post (
 	sm_id int,
 	mdtor_id int,
 	primary key (sm_id),
-	constraint post_studyMaterial foreign key (sm_id) references studyMaterials(sm_id),
-	constraint post_mdtor foreign key (mdtor_id) references moderators(mdtor_id)
+	constraint post_studyMaterial foreign key (sm_id) references studyMaterials(sm_id) ON UPDATE CASCADE ON DELETE CASCADE,
+	constraint post_mdtor foreign key (mdtor_id) references moderators(mdtor_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
