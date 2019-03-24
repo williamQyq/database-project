@@ -4,7 +4,7 @@
 
     $con = mysqli_connect($host, $username) or die('Unable To connect');
     $mydb = mysqli_select_db($con, $database) or die ('could not select database');
-    $query_view_sec = "SELECT * FROM courses NATURAL JOIN sections_belong";
+    $query_view_sec = "SELECT * FROM courses NATURAL JOIN sections_belong NATURAL JOIN timeSlot";
     
 ?>
 <html>
@@ -51,17 +51,17 @@
                         <td>'.$row["name"].'</td>
                         <td>'.$row["startDate"].'</td>
                         <td>'.$row["endDate"].'</td>
-                        <td>NA</td>
+                        <td>'.$row["weekDay"].$row["startTime"].'-'.$row["endTime"].'</td>
                         <td>'.$row["capacity"].'</td>
                         <td>'.$row["mtors_req"].'</td>
                         <td>'.$row["mtees_req"].'</td> 
                         <td>NA</td>
                         <td>NA</td>
-                        <td><form action= "section_add_mentor.php">
+                        <td><form action="">
                                 <input type="submit" value="add mentor"/>
                             </form>
                         </td>
-                        <td><form action= "section_add_mentee.php">
+                        <td><form action= "">
                                 <input type="submit" value="add mentee"/>
                             </form>
                         </td>

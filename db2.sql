@@ -85,6 +85,7 @@ create table sections_belong (
 	startDate DATE,
 	endDate DATE,
 	capacity int,
+	slot_id int NOT NULL UNIQUE,
 	primary key (cid, title, sec_id),
 	constraint sections_course foreign key (cid, title) references courses(cid, title) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -153,16 +154,12 @@ create table studyMaterials (
 
 create table timeSlot (
 	slot_id int,
-	cid int,
-	title char(20),
-	sec_id int,
 	startTime time,
 	endTime time,
 	weekDay char(10),
 	primary key (slot_id),
-	foreign key (cid, title, sec_id) references sections_belong(cid, title, sec_id) ON UPDATE CASCADE ON DELETE CASCADE
+	foreign key (slot_id) references sections_belong(slot_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
-
 
 create table textUsed (
 	cid int,
@@ -182,3 +179,16 @@ create table post (
 	constraint post_studyMaterial foreign key (sm_id) references studyMaterials(sm_id) ON UPDATE CASCADE ON DELETE CASCADE,
 	constraint post_mdtor foreign key (mdtor_id) references moderators(mdtor_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+--Insert into courses sections 
+INSERT INTO courses(cid, title, mtees_req, mtors_req) VALUES ('0','database1','junior','junior');
+INSERT INTO sections_belong(cid,title,sec_id,name,startDate,endDate,capacity,slot_id) VALUES ('0','database1','000','100','2019-03-21','2019-03-22','5','0');
+INSERT INTO timeSlot VALUES ('0','08:00:00','09:00:00','MWF');
+
+INSERT INTO courses(cid, title, mtees_req, mtors_req) VALUES ('1','database2','senior','senior');
+INSERT INTO sections_belong(cid,title,sec_id,name,startDate,endDate,capacity,slot_id) VALUES ('1','database2','001','101','2019-03-21','2019-03-22','5','1');
+INSERT INTO timeSlot VALUES ('1','08:00:00','09:00:00','MWF');
+
+INSERT INTO courses(cid, title, mtees_req, mtors_req) VALUES ('2','algorithm','junior','junior');
+INSERT INTO sections_belong(cid,title,sec_id,name,startDate,endDate,capacity,slot_id) VALUES ('2','algorithm','002','102','2019-03-21','2019-03-22','5','2');
+INSERT INTO timeSlot VALUES ('2','08:00:00','09:00:00','TTh');
