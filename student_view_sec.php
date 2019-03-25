@@ -22,29 +22,47 @@
             $mtor_num = $_SESSION["info".$i][5];
             $mtee_num = $_SESSION["info".$i][6];
             $id = $_SESSION["id"];
+            $query_check_teach = "SELECT * FROM teach WHERE cid = '$cid' AND title = '$title' AND sec_id = '$sec_id' AND mtor_id = '$id'";
+            $query_check_enroll = "SELECT * FROM enroll WHERE cid = '$cid' AND title = '$title' AND sec_id = '$sec_id' AND mtee_id = '$id'";
+           
             if(isset($_POST['teachBtn'.$i])) {     
-                //teach button $i is clicked 
-                //store info into teach table
-                if($_SESSION["grade"]>= $req_mtor && $mtor_num < $max_mtor_num) {
-                    $query_insert_teach = "INSERT INTO teach(cid, title, sec_id, mtor_id) VALUES('$cid','$title','$sec_id','$id')";
-                    mysqli_query($con,$query_insert_teach);
-                    $message = "Successfully!";
+                //check duplicate
+                
+                $result = mysqli_query($con,$query_check_teach);
+                $row  = mysqli_fetch_array($result);
+                if(is_array($row)){
+                    $message = "Fail to do that, You have taught this section!";
                 } else {
-                    $message = "You can't do that! You do not meet the requirement! Or this section is full!";
+                    //teach button $i is clicked 
+                    //store info into teach table
+                    if($_SESSION["grade"]>= $req_mtor && $mtor_num < $max_mtor_num) {
+                        $query_insert_teach = "INSERT INTO teach(cid, title, sec_id, mtor_id) VALUES('$cid','$title','$sec_id','$id')";
+                        mysqli_query($con,$query_insert_teach);
+                        $message = "Successfully!";
+                    } else {
+                        $message = "You can't do that! You do not meet the requirement! Or this section is full!";
+                    }
+                    unset($_POST['teachBtn'.$i]);
                 }
-                unset($_POST['teachBtn'.$i]);
             }
+            
             if(isset($_POST['enrollBtn'.$i])) {
-                //enroll button $i is clicked
-                //store info into enroll table
-                if($_SESSION["grade"]>= $req_mtee && $mtee_num < $max_mtee_num) {
-                    $query_insert_enroll = "INSERT INTO enroll(cid, title, sec_id, mtee_id) VALUES('$cid','$title','$sec_id','$id')";
-                    mysqli_query($con,$query_insert_enroll);
-                    $message = "Succesfully!";
-                } else{
-                    $message = "You can;t do that! You do not meet the requirement! Or this section is full";
+                $result = mysqli_query($con,$query_check_enroll);
+                $row  = mysqli_fetch_array($result);
+                if(is_array($row)){
+                    $message = "Fail to do that, You have enrolled this section!";
+                } else {
+                    //enroll button $i is clicked
+                    //store info into enroll table
+                    if($_SESSION["grade"]>= $req_mtee && $mtee_num < $max_mtee_num) {
+                        $query_insert_enroll = "INSERT INTO enroll(cid, title, sec_id, mtee_id) VALUES('$cid','$title','$sec_id','$id')";
+                        mysqli_query($con,$query_insert_enroll);
+                        $message = "Succesfully!";
+                    } else{
+                        $message = "You can;t do that! You do not meet the requirement! Or this section is full";
+                    }
+                    unset($_POST['enrollBtn'.$i]);
                 }
-                unset($_POST['enrollBtn'.$i]);
             }
         }   
     }
