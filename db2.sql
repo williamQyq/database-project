@@ -72,8 +72,8 @@ create table courses (
 	cid int,
 	title char(20),
 	description text,
-	mtees_req char(20),
-	mtors_req char(20),
+	mtees_req int,
+	mtors_req int,
 	primary key (cid, title)
 );
 
@@ -181,14 +181,14 @@ create table post (
 );
 
 --Insert into courses sections 
-INSERT INTO courses(cid, title, mtees_req, mtors_req) VALUES ('0','database1','junior','junior');
+INSERT INTO courses(cid, title, mtees_req, mtors_req) VALUES ('0','database1','3','3');
 INSERT INTO sections_belong(cid,title,sec_id,name,startDate,endDate,capacity,slot_id) VALUES ('0','database1','000','100','2019-03-21','2019-03-22','5','0');
 INSERT INTO timeSlot VALUES ('0','08:00:00','09:00:00','MWF');
 
-INSERT INTO courses(cid, title, mtees_req, mtors_req) VALUES ('1','database2','senior','senior');
+INSERT INTO courses(cid, title, mtees_req, mtors_req) VALUES ('1','database2','4','4');
 INSERT INTO sections_belong(cid,title,sec_id,name,startDate,endDate,capacity,slot_id) VALUES ('1','database2','001','101','2019-03-21','2019-03-22','5','1');
 INSERT INTO timeSlot VALUES ('1','08:00:00','09:00:00','MWF');
 
-INSERT INTO courses(cid, title, mtees_req, mtors_req) VALUES ('2','algorithm','junior','junior');
+INSERT INTO courses(cid, title, mtees_req, mtors_req) VALUES ('2','algorithm','3','3');
 INSERT INTO sections_belong(cid,title,sec_id,name,startDate,endDate,capacity,slot_id) VALUES ('2','algorithm','002','102','2019-03-21','2019-03-22','5','2');
 INSERT INTO timeSlot VALUES ('2','08:00:00','09:00:00','TTh');

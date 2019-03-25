@@ -1,5 +1,6 @@
 <?php
     include 'config.php';
+    include 'translate.php';
     session_start();
 
     $con = mysqli_connect($host, $username) or die('Unable To connect');
@@ -9,25 +10,38 @@
     $key = 0;
     $teachBtn = "teachBtn".$key;
     $enrollBtn = "enrollBtn".$key;
+    $message = "";
 
     if(isset($_SESSION['key'])) {
         for($i = 0; $i<$_SESSION['key']; $i++) {
             $cid = $_SESSION["info".$i][0];
             $title = $_SESSION["info".$i][1];
             $sec_id = $_SESSION["info".$i][2];
+            $req_mtor = $_SESSION["info".$i][3];
+            $req_mtee = $_SESSION["info".$i][4];
             $id = $_SESSION["id"];
             if(isset($_POST['teachBtn'.$i])) {     
                 //teach button $i is clicked 
-                //store info into teach table               
-                $query_insert_teach = "INSERT INTO teach(cid, title, sec_id, mtor_id) VALUES('$cid','$title','$sec_id','$id')";
-                mysqli_query($con,$query_insert_teach);
+                //store info into teach table
+                if($_SESSION["grade"]>= $req_mtor) {
+                    $query_insert_teach = "INSERT INTO teach(cid, title, sec_id, mtor_id) VALUES('$cid','$title','$sec_id','$id')";
+                    mysqli_query($con,$query_insert_teach);
+                    $message = "Successfully!";
+                } else {
+                    $message = "You can't do that! You do not meet the requirement!";
+                }
                 unset($_POST['teachBtn'.$i]);
             }
             if(isset($_POST['enrollBtn'.$i])) {
                 //enroll button $i is clicked
                 //store info into enroll table
-                $query_insert_enroll = "INSERT INTO enroll(cid, title, sec_id, mtee_id) VALUES('$cid','$title','$sec_id','$id')";
-                mysqli_query($con,$query_insert_enroll);
+                if($_SESSION["grade"]>= $req_mtee) {
+                    $query_insert_enroll = "INSERT INTO enroll(cid, title, sec_id, mtee_id) VALUES('$cid','$title','$sec_id','$id')";
+                    mysqli_query($con,$query_insert_enroll);
+                    $message = "Succesfully!";
+                } else{
+                    $message = "You can;t do that! You do not meet the requirement!";
+                }
                 unset($_POST['enrollBtn'.$i]);
             }
         }   
@@ -44,7 +58,7 @@
     if($_SESSION["name"]) {
 ?>
     Welcome <?php echo $_SESSION["name"]; ?>.<br>
-    Your grade is <?php echo $_SESSION["grade"];?>.<br>
+    Your grade is <?php echo translate_grade($_SESSION["grade"]);?>.<br>
     Click here to <a href="student_logout.php" tite="studentLogout">Logout</a>.<br>
     <a href="student_index.php">go back</a><br><br>
 <?php
@@ -55,6 +69,9 @@
     }
 ?>
 <h1>Section List</h1><br>
+<?php
+    if($message != "") {echo $message;}
+?>
 <table border="1">
     <tr>
         <th>Course Title </th>
@@ -101,7 +118,9 @@
                 $info = array(
                     $row["cid"],
                     $row["title"],
-                    $row["sec_id"]
+                    $row["sec_id"],
+                    $row["mtors_req"],
+                    $row["mtees_req"]
                 );
                 $info_index = "info".$key; 
                 $_SESSION[$info_index] = $info;
@@ -113,8 +132,8 @@
                         <td>'.$row["endDate"].'</td>
                         <td>'.$row["weekDay"].$row["startTime"].'-'.$row["endTime"].'</td>
                         <td>'.$row["capacity"].'</td>
-                        <td>'.$row["mtors_req"].'</td>
-                        <td>'.$row["mtees_req"].'</td> 
+                        <td>'.translate_grade($row["mtors_req"]).'</td>
+                        <td>'.translate_grade($row["mtees_req"]).'</td> 
                         <td>'.$mtor_cnt[0].'</td>
                         <td>'.$mtee_cnt[0].'</td>
                         <td><form action="" method="POST">

@@ -53,10 +53,10 @@ if(count($_POST)>0) {
                     <td>Grade:</td>
                     <td>    
                     <select name="grade">
-                        <option value="freshman">freshman</option>
-                        <option value="sophmore">sophmore</option>
-                        <option value="junior">junior</option>
-                        <option value="senior">senior</option>
+                        <option value="1">Freshman</option>
+                        <option value="2">Sophmore</option>
+                        <option value="3">Junior</option>
+                        <option value="4">Senior</option>
                     </select>
                     </td>
                 </tr>
@@ -71,6 +71,6 @@ if(count($_POST)>0) {
                 </tr>
             </table>
         </form>
-        <a href="home.html">go to home</a>
+        <a href="student_logout.php">go to home</a>
     </body>
 </html>

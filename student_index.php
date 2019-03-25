@@ -1,4 +1,5 @@
 <?php
+    include 'translate.php';
     session_start();
 ?>
 <html>
@@ -11,7 +12,7 @@
     if($_SESSION["name"]) {
 ?>
     Welcome <?php echo $_SESSION["name"]; ?>.<br>
-    Your grade is <?php echo $_SESSION["grade"];?>.<br>
+    Your grade is <?php echo translate_grade($_SESSION["grade"]);?>.<br>
     Click here to <a href="student_logout.php" tite="studentLogout">Logout</a>.<br><br>
 <?php
     }else {
