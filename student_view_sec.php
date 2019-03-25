@@ -19,28 +19,30 @@
             $sec_id = $_SESSION["info".$i][2];
             $req_mtor = $_SESSION["info".$i][3];
             $req_mtee = $_SESSION["info".$i][4];
+            $mtor_num = $_SESSION["info".$i][5];
+            $mtee_num = $_SESSION["info".$i][6];
             $id = $_SESSION["id"];
             if(isset($_POST['teachBtn'.$i])) {     
                 //teach button $i is clicked 
                 //store info into teach table
-                if($_SESSION["grade"]>= $req_mtor) {
+                if($_SESSION["grade"]>= $req_mtor && $mtor_num < $max_mtor_num) {
                     $query_insert_teach = "INSERT INTO teach(cid, title, sec_id, mtor_id) VALUES('$cid','$title','$sec_id','$id')";
                     mysqli_query($con,$query_insert_teach);
                     $message = "Successfully!";
                 } else {
-                    $message = "You can't do that! You do not meet the requirement!";
+                    $message = "You can't do that! You do not meet the requirement! Or this section is full!";
                 }
                 unset($_POST['teachBtn'.$i]);
             }
             if(isset($_POST['enrollBtn'.$i])) {
                 //enroll button $i is clicked
                 //store info into enroll table
-                if($_SESSION["grade"]>= $req_mtee) {
+                if($_SESSION["grade"]>= $req_mtee && $mtee_num < $max_mtee_num) {
                     $query_insert_enroll = "INSERT INTO enroll(cid, title, sec_id, mtee_id) VALUES('$cid','$title','$sec_id','$id')";
                     mysqli_query($con,$query_insert_enroll);
                     $message = "Succesfully!";
                 } else{
-                    $message = "You can;t do that! You do not meet the requirement!";
+                    $message = "You can;t do that! You do not meet the requirement! Or this section is full";
                 }
                 unset($_POST['enrollBtn'.$i]);
             }
@@ -101,7 +103,7 @@
                 if($result_cnt_mtor = mysqli_query($con,$query_count_mtor)){
                     $mtor_cnt = mysqli_fetch_array($result_cnt_mtor);
                 }else{
-                    $mtor_cnt[0] = '0';
+                    $mtor_cnt[0] = 0;
                 }
                 //free $result_cnt_mtor
                 mysqli_free_result($result_cnt_mtor);
@@ -109,7 +111,7 @@
                 if($result_cnt_mtee = mysqli_query($con,$query_count_mtee)){
                     $mtee_cnt = mysqli_fetch_array($result_cnt_mtee);
                 }else{
-                    $mtee_cnt[0] = '0';
+                    $mtee_cnt[0] = 0;
                 }
                 //free result
                 mysqli_free_result($result_cnt_mtee);
@@ -120,7 +122,9 @@
                     $row["title"],
                     $row["sec_id"],
                     $row["mtors_req"],
-                    $row["mtees_req"]
+                    $row["mtees_req"],
+                    $mtor_cnt[0],
+                    $mtee_cnt[0]
                 );
                 $info_index = "info".$key; 
                 $_SESSION[$info_index] = $info;
