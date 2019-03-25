@@ -5,6 +5,34 @@
     $con = mysqli_connect($host, $username) or die('Unable To connect');
     $mydb = mysqli_select_db($con, $database) or die ('could not select database');
     $query_view_sec = "SELECT * FROM courses NATURAL JOIN sections_belong NATURAL JOIN timeSlot";
+
+    $key = 0;
+    $teachBtn = "teachBtn".$key;
+    $enrollBtn = "enrollBtn".$key;
+
+    if(isset($_SESSION['key'])) {
+        for($i = 0; $i<$_SESSION['key']; $i++) {
+            $cid = $_SESSION["info".$i][0];
+            $title = $_SESSION["info".$i][1];
+            $sec_id = $_SESSION["info".$i][2];
+            $id = $_SESSION["id"];
+            if(isset($_POST['teachBtn'.$i])) {     
+                //teach button $i is clicked 
+                //store info into teach table               
+                $query_insert_teach = "INSERT INTO teach(cid, title, sec_id, mtor_id) VALUES('$cid','$title','$sec_id','$id')";
+                mysqli_query($con,$query_insert_teach);
+                unset($_POST['teachBtn'.$i]);
+            }
+            if(isset($_POST['enrollBtn'.$i])) {
+                //enroll button $i is clicked
+                //store info into enroll table
+                $query_insert_enroll = "INSERT INTO enroll(cid, title, sec_id, mtee_id) VALUES('$cid','$title','$sec_id','$id')";
+                mysqli_query($con,$query_insert_enroll);
+                unset($_POST['enrollBtn'.$i]);
+            }
+        }   
+    }
+     
 ?>
 <html>
 <head>
@@ -17,7 +45,8 @@
 ?>
     Welcome <?php echo $_SESSION["name"]; ?>.<br>
     Your grade is <?php echo $_SESSION["grade"];?>.<br>
-    Click here to <a href="student_logout.php" tite="studentLogout">Logout</a>.<br><br>
+    Click here to <a href="student_logout.php" tite="studentLogout">Logout</a>.<br>
+    <a href="student_index.php">go back</a><br><br>
 <?php
     }else {
 ?>
@@ -68,6 +97,15 @@
                 //free result
                 mysqli_free_result($result_cnt_mtee);
                 
+                //store section info---------------
+                $info = array(
+                    $row["cid"],
+                    $row["title"],
+                    $row["sec_id"]
+                );
+                $info_index = "info".$key; 
+                $_SESSION[$info_index] = $info;
+
                 echo '<tr> 
                         <td>'.$row["title"].'</td>
                         <td>'.$row["name"].'</td>
@@ -79,19 +117,26 @@
                         <td>'.$row["mtees_req"].'</td> 
                         <td>'.$mtor_cnt[0].'</td>
                         <td>'.$mtee_cnt[0].'</td>
-                        <td><form action="">
-                                <input type="submit" value="add mentor"/>
+                        <td><form action="" method="POST">
+                                <input type="submit" name="'.$teachBtn.'" value="teach"/>
                             </form>
                         </td>
-                        <td><form action= "">
-                                <input type="submit" value="add mentee"/>
+                        <td><form action= "" method="POST">
+                                <input type="submit" name="'.$enrollBtn.'" value="enroll"/>
                             </form>
                         </td>
                     </tr>';
+                $key++;
+                $teachBtn = "teachBtn".$key;
+                $enrollBtn = "enrollBtn".$key;
             }
+            $_SESSION['key'] = $key;
         }
     ?>
 </table>
-
 </body>
 </html>
+
+<?php
+
+?>
