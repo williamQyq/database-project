@@ -21,21 +21,15 @@ if(count($_POST)>0) {
     }else {
         $message="You have successfully update your profile!";
     }
-
-    $query_update_stu_grade = "UPDATE students SET grade='" . $_POST["grade"] . "' WHERE stu_id='". $id ."' ";
-    $result = mysqli_query($con,$query_update_stu_grade);
-    if(!$result) {
-        trigger_error('query failed',E_USER_ERROR);
-    }
 }
 
 ?>
 <html>
     <head>
-        <title>Change Student Profile</title>
+        <title>Change Parent Profile</title>
     </head>
     <body>
-        <h1> Change Your Student Profile</h1>
+        <h1> Change Your Parent Profile</h1>
         <div><?php if($message!="") {echo $message;} ?></div>
         <form action="" method="post">
            <table>
@@ -43,22 +37,7 @@ if(count($_POST)>0) {
                     <td><input type="text" name="email" placeholder="enter your email address"/></td>
                 </tr>
                 <tr>
-                    <td><input type="text" name="parentEmail" placeholder="enter your parent email"/></td>
-                </tr>
-                <tr>
                     <td><input type="text" name="password" placeholder="enter your new password"/></td>
-                </tr>
-                
-                <tr>
-                    <td>Grade:</td>
-                    <td>    
-                    <select name="grade">
-                        <option value="1">Freshman</option>
-                        <option value="2">Sophmore</option>
-                        <option value="3">Junior</option>
-                        <option value="4">Senior</option>
-                    </select>
-                    </td>
                 </tr>
                 <tr>
                     <td><input type="text" name="name" placeholder="enter your name"/></td>

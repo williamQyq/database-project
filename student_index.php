@@ -13,7 +13,7 @@
 ?>
     Welcome <?php echo $_SESSION["name"]; ?>.<br>
     Your grade is <?php echo translate_grade($_SESSION["grade"]);?>.<br>
-    Click here to <a href="student_logout.php" tite="studentLogout">Logout</a>.<br><br>
+    Click here to <a href="logout.php" tite="Logout">Logout</a>.<br><br>
 <?php
     }else {
 ?>

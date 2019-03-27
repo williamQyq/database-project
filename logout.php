@@ -2,6 +2,9 @@
     session_start();
     unset($_SESSION["id"]);
     unset($_SESSION["name"]);
+    if(isset($_SESSION["grade"])){
+        unset($_SESSION["grade"]);
+    }
     session_destroy();
     header("Location:home.html");
 ?>

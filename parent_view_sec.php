@@ -14,57 +14,29 @@
             $cid = $_SESSION["info".$i][0];
             $title = $_SESSION["info".$i][1];
             $sec_id = $_SESSION["info".$i][2];
-            $req_mtor = $_SESSION["info".$i][3];
-            $req_mtee = $_SESSION["info".$i][4];
-            $mtor_num = $_SESSION["info".$i][5];
-            $mtee_num = $_SESSION["info".$i][6];
+            $mtor_num = $_SESSION["info".$i][3];
+            $mtee_num = $_SESSION["info".$i][4];
+            $mdtor_num = $_SESSION["info".$i][5];//---------------------------------------------
             $id = $_SESSION["id"];
-            $query_check_teach = "SELECT * FROM teach WHERE cid = '$cid' AND title = '$title' AND sec_id = '$sec_id' AND mtor_id = '$id'";
-            $query_check_enroll = "SELECT * FROM enroll WHERE cid = '$cid' AND title = '$title' AND sec_id = '$sec_id' AND mtee_id = '$id'";
-           
-            if(isset($_POST['teachBtn'.$i])) {     
+
+            $query_check_moderate = "SELECT * FROM moderate WHERE cid = '$cid' AND title = '$title' AND sec_id = '$sec_id' AND mdtor_id = '$id'";
+          
+            if(isset($_POST['modBtn'.$i])) {     
                 //check duplicate
                 
-                $result = mysqli_query($con,$query_check_teach);
+                $result = mysqli_query($con,$query_check_moderate);
                 // $row  = mysqli_fetch_array($result);
                 if(mysqli_num_rows($result)>0){
-                    $message = "Fail to do that, You have taught this section!";
+                    $message = "Fail to do that, You have moderated this section!";
                 } else {
-                    //teach button $i is clicked 
-                    //store info into teach table
-                    if($_SESSION["grade"]>= $req_mtor && $mtor_num < $max_mtor_num) {
-                        $query_insert_teach = "INSERT INTO teach(cid, title, sec_id, mtor_id) VALUES('$cid','$title','$sec_id','$id')";
-                        mysqli_query($con,$query_insert_teach);
-                        $message = "Successfully!";
-                        unset($_POST['teachBtn'.$i]);
-                    } else {
-                        $message = "You can't do that! You do not meet the requirement! Or this section is full!";
-                    }
+                    //mod button $i is clicked 
+                    //store info into moderate table
+                    $query_insert_moderate = "INSERT INTO moderate(cid, title, sec_id, mdtor_id) VALUES('$cid','$title','$sec_id','$id')";
+                    mysqli_query($con,$query_insert_moderate);
+                    $message = "Successfully!";
                 }
                 //unset button  
-                unset($_POST['teachBtn'.$i]);  
-            }
-            
-            if(isset($_POST['enrollBtn'.$i])) {
-                echo $_POST['enrollBtn'.$i];
-
-                $result = mysqli_query($con,$query_check_enroll);
-                // $row  = mysqli_fetch_array($result);
-                if(mysqli_num_rows($result)>0){
-                    $message = "Fail to do that, You have enrolled this section!";
-                } else {
-                    //enroll button $i is clicked
-                    //store info into enroll table
-                    if($_SESSION["grade"]>= $req_mtee && $mtee_num < $max_mtee_num) {
-                        $query_insert_enroll = "INSERT INTO enroll(cid, title, sec_id, mtee_id) VALUES('$cid','$title','$sec_id','$id')";
-                        mysqli_query($con,$query_insert_enroll);
-                        $message = "Succesfully!";
-                    } else{
-                        $message = "You can;t do that! You do not meet the requirement! Or this section is full";
-                    }
-                }
-                //unset button
-                unset($_POST['enrollBtn'.$i]);
+                unset($_POST['modBtn'.$i]);  
             }
         }   
     }
@@ -79,14 +51,13 @@
 <?php
     if($_SESSION["name"]) {
 ?>
-    Welcome <?php echo $_SESSION["name"]; ?>.<br>
-    Your grade is <?php echo translate_grade($_SESSION["grade"]);?>.<br>
+    Welcome Parent <?php echo $_SESSION["name"]; ?>.<br>
     Click here to <a href="logout.php" tite="Logout">Logout</a>.<br>
-    <a href="student_index.php">go back</a><br><br>
+    <a href="parent_index.php">go back</a><br><br>
 <?php
     }else {
 ?>
-    <h1>Please <a href="student_login.php" title="studentLogin">login</a> first.</h1><br>
+    <h1>Please <a href="parent_login.php" title="parentLogin">login</a> first.</h1><br>
 <?php    
     }
 ?>
@@ -106,14 +77,13 @@
         <th>Mentee Req </th>
         <th>Enrolled Mentor </th>
         <th>Enrolled Mentee </th>
-        <th>Teach as Mentor </th>
-        <th>Enroll as Mentee </th>
+        <th>Enrolled Moderator</th>
+        <th>Moderate as Morderator </th>
     </tr>
     <?php
 
         $key = 0;
-        $teachBtn = "teachBtn".$key;
-        $enrollBtn = "enrollBtn".$key;
+        $modBtn = "modBtn".$key;
         $result = mysqli_query($con,$query_view_sec);
         if(mysqli_num_rows($result)>0) {
             while($row = mysqli_fetch_array($result)) {
@@ -123,7 +93,10 @@
                 //count enrolled mtee in section
                 $query_count_mtee = "SELECT COUNT(mtee_id) FROM enroll WHERE enroll.cid = '$row[cid]'
                 AND enroll.title = '$row[title]' AND enroll.sec_id = '$row[sec_id]'";
-                
+                //count moderator insection
+                $query_count_mdtor = "SELECT COUNT(mdtor_id) FROM moderate WHERE moderate.cid = '$row[cid]'
+                AND moderate.title = '$row[title]' AND moderate.sec_id = '$row[sec_id]'";
+
                 if($result_cnt_mtor = mysqli_query($con,$query_count_mtor)){
                     $mtor_cnt = mysqli_fetch_array($result_cnt_mtor);
                 }else{
@@ -139,6 +112,14 @@
                 }
                 //free result
                 mysqli_free_result($result_cnt_mtee);
+
+                if($result_cnt_mdtor = mysqli_query($con,$query_count_mdtor)){
+                    $mdtor_cnt = mysqli_fetch_array($result_cnt_mdtor);
+                }else{
+                    $mdtor_cnt[0] = 0;
+                }
+                //free result
+                mysqli_free_result($result_cnt_mdtor);
                 
                 //store section info---------------
                 $info = array(
@@ -148,11 +129,12 @@
                     $row["mtors_req"],
                     $row["mtees_req"],
                     $mtor_cnt[0],
-                    $mtee_cnt[0]
+                    $mtee_cnt[0],
+                    $mdtor_cnt[0],
                 );
                 $info_index = "info".$key; 
                 $_SESSION[$info_index] = $info;
-
+                
                 echo '<tr> 
                         <td>'.$row["title"].'</td>
                         <td>'.$row["name"].'</td>
@@ -164,18 +146,15 @@
                         <td>'.translate_grade($row["mtees_req"]).'</td> 
                         <td>'.$mtor_cnt[0].'</td>
                         <td>'.$mtee_cnt[0].'</td>
+                        <td>'.$mdtor_cnt[0].'</td>
                         <td><form action="" method="POST">
-                                <input type="submit" name="'.$teachBtn.'" value="teach"/>
-                            </form>
-                        </td>
-                        <td><form action= "" method="POST">
-                                <input type="submit" name="'.$enrollBtn.'" value="enroll"/>
+                                <input type="submit" name="'.$modBtn.'" value="moderate"/>
                             </form>
                         </td>
                     </tr>';
+
                 $key++;
-                $teachBtn = "teachBtn".$key;
-                $enrollBtn = "enrollBtn".$key;
+                $modBtn = "modBtn".$key;
             }
             $_SESSION['key'] = $key;
         }
