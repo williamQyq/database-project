@@ -14,6 +14,7 @@
         if(is_array($row)) {
             $message = "This email has been registered! Please change your email.";
         } else {
+            //store prof info into session
             $_SESSION["email"] = $_POST['email'];
             $_SESSION["parentEmail"] = $_POST["parentEmail"];
             $_SESSION["password"] = $_POST["password"];
