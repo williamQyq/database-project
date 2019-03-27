@@ -132,8 +132,8 @@
                     $mtee_cnt[0],
                     $mdtor_cnt[0],
                 );
-                $info_index = "info".$key; 
-                $_SESSION[$info_index] = $info;
+               
+                $_SESSION["info".$key] = $info;
                 
                 echo '<tr> 
                         <td>'.$row["title"].'</td>

@@ -22,6 +22,7 @@
     if(mysqli_num_rows($result)<=0){
       echo "Fail to insert Parent Children relation. Do you forget to register parent first? ";
     }else{
+      mysqli_free_result($result);
       //insert users table
       $query_insert_user = "INSERT INTO users (username, password, name, emailAddress, phoneNumber) VALUES ('$email', '$password', '$name', '$email', '$phoneNumber')";
       $result = mysqli_query($con, $query_insert_user) or die ('Query failed: ' . mysql_error());
@@ -30,23 +31,24 @@
       } 
       //get auto increment uid from insert user table 
       $user_id = mysqli_insert_id($con);
-
-      $query_insert_custody = "INSERT INTO custody (par_id, stu_id) SELECT u.uid, s.stu_id FROM users u, students s
-                              WHERE u.emailAddress = '$parentEmail' AND s.stu_id = $user_id";
-      $sql_custody = mysqli_query($con, $query_insert_custody);
-      if(!$sql_custody) {
-        trigger_error('query failed',E_USER_ERROR);
-      }
-        
-      $update_mtor_query = "INSERT INTO mentors VALUES('$user_id')";
-      $update_mtee_query = "INSERT INTO mentees VALUES('$user_id')"; 
-
+      
+      //insert students table
       $update_stu_query = "INSERT INTO students VALUES('$user_id','$grade')";
       $sql = mysqli_query($con, $update_stu_query);
       if(!$sql) {
         trigger_error('query failed',E_USER_ERROR);
       }
-    
+      //insert custody table
+      $query_insert_custody = "INSERT INTO custody (par_id, stu_id) SELECT u.uid, s.stu_id FROM users u, students s
+                              WHERE u.emailAddress = '$parentEmail' AND s.stu_id = '$user_id'";
+      $sql_custody = mysqli_query($con, $query_insert_custody);
+      if(!$sql_custody) {
+        trigger_error('query failed',E_USER_ERROR);
+      }
+
+      //insert mtor mtee table
+      $update_mtor_query = "INSERT INTO mentors VALUES('$user_id')";
+      $update_mtee_query = "INSERT INTO mentees VALUES('$user_id')"; 
       if($role == 'mentee') {
         $sql_mtee = mysqli_query($con, $update_mtee_query);
       } else if($role == 'mentor') {
@@ -73,4 +75,4 @@ session_unset();
 session_destroy(); 
 ?>
 
-<a href="home.html">go to register page</a>
+<a href="home.html">go to home page</a>

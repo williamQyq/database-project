@@ -1,5 +1,6 @@
 <?php
     session_start();
+    if(isset($_SESSION['key']) {unset($_SESSION['key']);}
 ?>
 <html>
 <head>
@@ -29,7 +30,7 @@
     <tr>
         <td>User</td>
         <td>Profile</td>
-        <td><a href=parent_change_child_prof.php title="parentChildProfile">Change Your children Profile</a></td>
+        <td><a href=parent_alt_child_prof.php title="parentChildProfile">Change Your children Profile</a></td>
     </tr>
     <tr>
         <td>Parent</td>
