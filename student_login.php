@@ -42,6 +42,7 @@
 <form name="frmUser" method="post" action="">
 <div><?php if($message!="") { echo $message; } ?></div>
 <h3>Student Login</h3>
+<a href="home.html">go back</a><br><br>
  Username:<br>
  <input type="text" name="username">
  <br>
