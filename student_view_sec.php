@@ -68,7 +68,7 @@
             }
         }   
     }
-     
+    unset($_SESSION['key']);
 ?>
 <html>
 <head>
@@ -110,7 +110,7 @@
         <th>Enroll as Mentee </th>
     </tr>
     <?php
-
+        //record button key
         $key = 0;
         $teachBtn = "teachBtn".$key;
         $enrollBtn = "enrollBtn".$key;

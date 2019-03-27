@@ -25,14 +25,15 @@
     $id = $_SESSION["id"];
     $con = mysqli_connect($host, $username) or die('Unable To connect');
     $mydb = mysqli_select_db($con, $database) or die ('could not select database');
-    $query_select_sec = "SELECT DISTINCT s.cid,s.sec_id, s.title, s.name FROM sections_belong s, teach t, enroll e
-                        WHERE mtor_id = '$id' AND (s.cid = t.cid AND s.sec_id = t.sec_id AND s.title = t.title) 
-                        OR (s.cid = e.cid AND e.sec_id = e.sec_id AND s.title = e.title)";
-    $result_sec = mysqli_query($con,$query_select_sec);
-    if(mysqli_num_rows($result_sec) <= 0){
+    $query_select_sec = "SELECT * FROM sections_belong s NATURAL JOIN teach t WHERE t.mtor_id = '$id'
+                         UNION
+                         SELECT * FROM sections_belong s NATURAL JOIN enroll e WHERE e.mtee_id = '$id'";
+
+    $result_select_sec = mysqli_query($con,$query_select_sec);
+    if(mysqli_num_rows($result_select_sec)<=0){
         echo '<h1> No section found! </h1>';
     } else {
-        while($row = mysqli_fetch_array($result_sec)) {
+        while($row = mysqli_fetch_array($result_select_sec)) {
             $cid = $row["cid"];
             $title = $row["title"];
             $sec_id = $row["sec_id"];

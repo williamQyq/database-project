@@ -97,8 +97,7 @@ create table sessions (
 	ses_id int NOT NULL,
 	name char(20),
 	announcement text,
-	date datetime,
-	capacity int,
+	date date,
 	primary key(cid,title,sec_id,ses_id),
 	constraint sessions_section foreign key (cid, title, sec_id) references sections_belong(cid, title, sec_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -106,16 +105,16 @@ create table sessions (
 create table enroll (
 	cid int,
 	title char(20),
-	sec_id int not null,
-	mtee_id int not null,
+	sec_id int,
+	mtee_id int,
 	constraint enroll_sec_id foreign key (cid, title, sec_id) references sections_belong(cid, title, sec_id) ON UPDATE CASCADE ON DELETE CASCADE,
 	constraint enroll_mtee_id foreign key (mtee_id) references mentees(mtee_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 create table teach (
 	cid int,
 	title char(20),
-	mtor_id int,
 	sec_id int,
+	mtor_id int,
 	constraint teach_section_id foreign key (cid, title, sec_id) references sections_belong(cid, title, sec_id) ON UPDATE CASCADE ON DELETE CASCADE,
 	constraint teach_mtor_id foreign key (mtor_id) references mentors(mtor_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -135,8 +134,7 @@ create table participate (
 	title char(20),
 	sec_id int,
 	ses_id int,
-	startTime datetime,
-	endTime datetime,
+	date date,
 	constraint participate_sec_ses foreign key (cid, title, sec_id, ses_id) references sessions(cid, title, sec_id, ses_id),
 	constraint participate_mtee foreign key (mtee_id) references mentees(mtee_id) ON UPDATE CASCADE ON DELETE CASCADE,
 	constraint participate_mtor foreign key (mtor_id) references mentors(mtor_id) ON UPDATE CASCADE ON DELETE CASCADE
@@ -181,14 +179,20 @@ create table post (
 );
 
 --Insert into courses sections 
-INSERT INTO courses(cid, title, mtees_req, mtors_req) VALUES ('0','database1','3','3');
-INSERT INTO sections_belong(cid,title,sec_id,name,startDate,endDate,capacity,slot_id) VALUES ('0','database1','000','100','2019-03-21','2019-03-22','9','0');
+INSERT INTO courses(cid, title, mtees_req, mtors_req) VALUES ('0','database1','1','1');
+INSERT INTO sections_belong(cid,title,sec_id,name,startDate,endDate,capacity,slot_id) VALUES ('0','database1','100','100','2019-03-21','2019-03-22','9','0');
 INSERT INTO timeSlot VALUES ('0','08:00:00','09:00:00','MWF');
 
-INSERT INTO courses(cid, title, mtees_req, mtors_req) VALUES ('1','database2','4','4');
-INSERT INTO sections_belong(cid,title,sec_id,name,startDate,endDate,capacity,slot_id) VALUES ('1','database2','001','101','2019-03-21','2019-03-22','9','1');
+INSERT INTO courses(cid, title, mtees_req, mtors_req) VALUES ('1','database2','1','1');
+INSERT INTO sections_belong(cid,title,sec_id,name,startDate,endDate,capacity,slot_id) VALUES ('1','database2','101','101','2019-03-21','2019-03-22','9','1');
 INSERT INTO timeSlot VALUES ('1','08:00:00','09:00:00','MWF');
 
 INSERT INTO courses(cid, title, mtees_req, mtors_req) VALUES ('2','algorithm','3','3');
-INSERT INTO sections_belong(cid,title,sec_id,name,startDate,endDate,capacity,slot_id) VALUES ('2','algorithm','002','102','2019-03-21','2019-03-22','9','2');
+INSERT INTO sections_belong(cid,title,sec_id,name,startDate,endDate,capacity,slot_id) VALUES ('2','algorithm','102','102','2019-03-21','2019-03-22','9','2');
 INSERT INTO timeSlot VALUES ('2','08:00:00','09:00:00','TTh');
+
+INSERT INTO sessions VALUES ('0','database1','100','0','100-1','','2019-03-26');
+INSERT INTO sessions VALUES ('0','database1','100','1','100-2','','2019-03-28');
+INSERT INTO sessions VALUES ('1','database2','101','0','101-1','','2019-03-26');
+INSERT INTO sessions VALUES ('1','database2','101','1','101-2','','2019-03-28');
+INSERT INTO sessions VALUES ('2','algorithm','102','0','102-1','','2019-03-26');

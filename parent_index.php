@@ -1,6 +1,8 @@
 <?php
     session_start();
-    if(isset($_SESSION['key']) {unset($_SESSION['key']);}
+    if(isset($_SESSION['key'])) {
+        unset($_SESSION['key']);
+    }
 ?>
 <html>
 <head>

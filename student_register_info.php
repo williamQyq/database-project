@@ -20,7 +20,7 @@
     $query_check_par = "SELECT emailAddress FROM users WHERE users.emailAddress = '$parentEmail'";
     $result = mysqli_query($con, $query_check_par);
     if(mysqli_num_rows($result)<=0){
-      echo "Fail to insert Parent Children relation. Do you forget to register parent first? ";
+      echo "Fail to Register. Do you enter Parent Email correctly? ";
     }else{
       mysqli_free_result($result);
       //insert users table
