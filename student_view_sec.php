@@ -7,8 +7,10 @@
     $mydb = mysqli_select_db($con, $database) or die ('could not select database');
     $query_view_sec = "SELECT * FROM courses NATURAL JOIN sections_belong NATURAL JOIN timeSlot";
 
+
     $message = "";
 
+    //check previous clicked btn and session data
     if(isset($_SESSION['key'])) {
         for($i = 0; $i<$_SESSION['key']; $i++) {
             $cid = $_SESSION["info".$i][0];

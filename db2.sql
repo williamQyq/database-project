@@ -94,7 +94,7 @@ create table sessions (
 	cid int,
 	title char(20),
 	sec_id int,
-	ses_id int NOT NULL,
+	ses_id int,
 	name char(20),
 	announcement text,
 	date date,
@@ -128,16 +128,15 @@ create table moderate (
 );
 
 create table participate (
-	mtee_id int,
-	mtor_id int,
+	stu_id int,
 	cid int,
 	title char(20),
 	sec_id int,
 	ses_id int,
 	date date,
-	constraint participate_sec_ses foreign key (cid, title, sec_id, ses_id) references sessions(cid, title, sec_id, ses_id),
-	constraint participate_mtee foreign key (mtee_id) references mentees(mtee_id) ON UPDATE CASCADE ON DELETE CASCADE,
-	constraint participate_mtor foreign key (mtor_id) references mentors(mtor_id) ON UPDATE CASCADE ON DELETE CASCADE
+	primary key (stu_id,cid,title,sec_id,ses_id)
+	-- constraint participate_sec_ses foreign key (cid, title, sec_id, ses_id) references sessions(cid, title, sec_id, ses_id),
+	-- constraint participate_stu foreign key (stu_id) references students(stu_id) ON DELETE CASCADE
 );
 
 create table studyMaterials (
