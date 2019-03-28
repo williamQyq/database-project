@@ -133,8 +133,7 @@ create table participate (
 	title char(20),
 	sec_id int,
 	ses_id int,
-	date date,
-	primary key (stu_id,cid,title,sec_id,ses_id)
+	date date
 	-- constraint participate_sec_ses foreign key (cid, title, sec_id, ses_id) references sessions(cid, title, sec_id, ses_id),
 	-- constraint participate_stu foreign key (stu_id) references students(stu_id) ON DELETE CASCADE
 );
