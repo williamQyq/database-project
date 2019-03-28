@@ -1,8 +1,16 @@
 <?php
+    include 'config.php';
     session_start();
     if(isset($_SESSION['key'])) {
         unset($_SESSION['key']);
     }
+
+    $id = $_SESSION["id"];
+    $con = mysqli_connect($host, $username) or die('Unable To connect');
+    $mydb = mysqli_select_db($con, $database) or die ('could not select database');
+
+
+
 ?>
 <html>
 <head>
@@ -45,6 +53,40 @@
         <td><a href=parent_view_mdtor.php title="parentMtor">View Moderator</a></td>
     </tr>
 </table>
+
+<?php 
+    //selec mentor less than 2 sessions
+    $query_select_ses_with_less_2_mtor = "SELECT m.cid, m.title, m.sec_id, m.ses_id FROM
+                                   (SELECT t.mtor_id,s.cid,s.title,s.sec_id,s.ses_id
+                                    FROM teach t NATURAL JOIN sessions s 
+                                    WHERE t.cid = s.cid AND t.title = s.title AND t.sec_id = s.sec_id) AS m
+                             GROUP BY m.cid, m.title, m.sec_id, m.ses_id
+                             HAVING COUNT(m.mtor_id)<2";
+
+    $result = mysqli_query($con,$query_select_ses_with_less_2_mtor);
+    if(mysqli_num_rows($result)>0){
+        echo '<h1> Moderator Notification </h1>';
+        echo '<h3> sessions with less than 2 mentors</h3>';
+        echo '<table border="1">
+            <tr>
+                <th>Course ID</th>
+                <th>Course Title</th>
+                <th>Section ID</th>
+                <th>Session ID</th>
+            </tr>';
+    
+        while($row = mysqli_fetch_array($result)){
+            echo '<tr>
+                    <td>'.$row["cid"].'</td>
+                    <td>'.$row["title"].'</td>
+                    <td>'.$row["sec_id"].'</td>
+                    <td>'.$row["ses_id"].'</td>
+                  </tr>';
+        }
+        echo '</table>';
+    }
+?>
+
 
 </body>
 </html>

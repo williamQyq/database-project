@@ -26,12 +26,12 @@
                 
                 $result = mysqli_query($con,$query_check_moderate);
                 // $row  = mysqli_fetch_array($result);
-                if(mysqli_num_rows($result)>0){
-                    $message = "Fail to do that, You have moderated this section!";
+                if(mysqli_num_rows($result)>0 || $mdtor_num >=1){
+                    $message = "Fail to do that! You have moderated this section or This section has been moderated!";
                 } else {
                     //mod button $i is clicked 
                     //store info into moderate table
-                    $query_insert_moderate = "INSERT INTO moderate(cid, title, sec_id, mdtor_id) VALUES('$cid','$title','$sec_id','$id')";
+                    $query_insert_moderate = "INSERT INTO moderate (cid, title, sec_id, mdtor_id) VALUES('$cid','$title','$sec_id','$id')";
                     mysqli_query($con,$query_insert_moderate);
                     $message = "Successfully!";
                 }
