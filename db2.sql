@@ -139,7 +139,7 @@ create table participate (
 );
 
 create table studyMaterials (
-	sm_id int primary key,
+	sm_id int primary key AUTO_INCREMENT,
 	title char(20),
 	author char(30),
 	type char(20),
@@ -161,15 +161,14 @@ create table textUsed (
 	cid int,
 	title char(20),
 	sec_id int,
-	ses_id int,
 	sm_id int,
-	primary key(cid, title, sec_id, ses_id, sm_id),
-	constraint textUsed_session foreign key (cid, title, sec_id, ses_id) references sessions(cid, title, sec_id, ses_id) ON UPDATE CASCADE ON DELETE CASCADE,
+	primary key(cid, title, sec_id, sm_id),
+	constraint textUsed_session foreign key (cid, title, sec_id) references sections_belong(cid, title, sec_id) ON UPDATE CASCADE ON DELETE CASCADE,
 	constraint textUsed_studyMaterial foreign key (sm_id) references studyMaterials(sm_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 create table post (
-	sm_id int,
+	sm_id int NOT NULL,
 	mdtor_id int,
 	primary key (sm_id),
 	constraint post_studyMaterial foreign key (sm_id) references studyMaterials(sm_id) ON UPDATE CASCADE ON DELETE CASCADE,

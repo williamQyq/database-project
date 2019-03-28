@@ -122,6 +122,7 @@
             $assignBtn = "assBtn".$key;
             $postBtn = "posBtn".$key;
         }
+        $_SESSION['postkey'] = $key;
         $_SESSION['asskey'] = $key;
     }
 ?>

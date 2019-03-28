@@ -139,6 +139,7 @@ if(mysqli_num_rows($result_mtor_in_teach) <= 0){
                     <th>Session Date</th>
                     <th>Participate Mentee</th>
                     <th>Participate Mentor</th>
+                    <th>Study Materials</th>
                     <th>Status</th>
                     <th>Participate/Decline</th>
                 </tr>';
@@ -192,6 +193,10 @@ if(mysqli_num_rows($result_mtor_in_teach) <= 0){
             $ses_status = "Canceled";
         }
 
+        $query_sm = "SELECT sm.title FROM studyMaterials sm, textUsed tu WHERE tu.cid = '$cid' AND tu.title = '$title' AND tu.sec_id = '$sec_id' AND tu.sm_id = sm.sm_id";
+        $result_sm = mysqli_query($con, $query_sm);
+        $sm_title = mysqli_fetch_array($result_sm);
+
         echo '<tr>
                 <td>'.$title.'</td>
                 <td>'.$sec_id.'</td>
@@ -199,6 +204,7 @@ if(mysqli_num_rows($result_mtor_in_teach) <= 0){
                 <td>'.$ses_date.'</td>
                 <td>'.$mtor_cnt[0].'</td>
                 <td>'.$mtee_cnt[0].'</td>
+                <td>'.$sm_title[0].'</td>
                 <td>'.$ses_status.'</td>
                 <td><form action="" method="POST">
                         <select name="ans">

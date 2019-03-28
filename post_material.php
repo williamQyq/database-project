@@ -5,47 +5,45 @@
 
     $con = mysqli_connect($host, $username) or die('Unable To connect');
     $mydb = mysqli_select_db($con, $database) or die ('could not select database');
-    $query_view_mtor = "SELECT u.uid, u.name, s.grade FROM users u NATURAL JOIN mentors m NATURAL JOIN students s WHERE u.uid = m.mtor_id AND m.mtor_id = s.stu_id";
-
     $message = "";
 
-        //get the clicked btn stored info
-        for($btn_key = 0; $btn_key<$_SESSION['asskey'];  $btn_key++){
-            if(isset($_POST["assBtn".$btn_key]) || isset($_SESSION["assBtn".$btn_key])){
-                $_SESSION["assBtn".$btn_key] = $btn_key; 
-                $cid = $_SESSION["assinfo".$btn_key][0];
-                $title = $_SESSION["assinfo".$btn_key][1];
-                $sec_id = $_SESSION["assinfo".$btn_key][2];
-            }
+    //get the clicked btn stored info
+    for($btn_key = 0; $btn_key<$_SESSION['postkey'];  $btn_key++){
+        if(isset($_POST["postBtn".$btn_key]) || isset($_SESSION["postBtn".$btn_key])){
+            $_SESSION["postBtn".$btn_key] = $btn_key; 
+            $cid = $_SESSION["assinfo".$btn_key][0];
+            $title = $_SESSION["assinfo".$btn_key][1];
+            $sec_id = $_SESSION["assinfo".$btn_key][2];
         }
-        if(isset($_SESSION["setKey"])) {
-            for($set_key=0; $set_key<$_SESSION["setKey"]; $set_key++) {
-                $uid = $_SESSION["setInfo".$set_key][0];
-                $name = $_SESSION["setInfo".$set_key][1];
-                $grade = $_SESSION["setInfo".$set_key][2];
-        
-                $query_check_mentor = "SELECT * FROM teach WHERE cid = '$cid' AND title = '$title' AND sec_id = '$sec_id' AND mtor_id = '$uid'";    
-                if(isset($_POST["setBtn".$set_key])){
-                    //avoid lost post;
-                    $result = mysqli_query($con,$query_check_mentor);
-                        // $row  = mysqli_fetch_array($result);
-                    if(mysqli_num_rows($result)>0){
-                        $message = "Fail to do that! This mentor has taught this section!";
-                    } else {
-                        //mod button $i is clicked 
-                        //store info into moderate table
-                        $query_insert_teach = "INSERT INTO teach (cid, title, sec_id, mtor_id) VALUES('$cid','$title','$sec_id','$uid')";
-                        mysqli_query($con,$query_insert_teach);
-                        $message = "Successfully!";
-                    }   
+    }
+
+            if(isset($_POST["smTitle"])){
+                $smTitle = $_POST["smTitle"];
+                $author = $_POST["author"];
+                $type = $_POST["type"];
+                $url = $_POST["URL"];
+                $date = $_POST["date"];
+                $notes = $_POST["notes"];
+
+                $query_insert_sm = "INSERT INTO studyMaterials (title,author,type,URL,assignedDate,notes) VALUES ('$smTitle','$author','$type','$url','$date','$notes')";
+                
+                $result = mysqli_query($con,$query_insert_sm);
+                if(!$result){
+                    $message = "Fail to insert study material";
                 }
+                $sm_id = mysqli_insert_id($con);
+
+                $query_insert_textUsed = "INSERT INTO textUsed VALUES ('$cid','$title','$sec_id','$sm_id')";
+                $result = mysqli_query($con,$query_insert_textUsed);
+                if(!$result){
+                    $message = "Fail to insert study material";
+                }
+                $message = "Successfully!";
             }
-        }
-     
 ?>
 <html>
 <head>
-<title>Assign mentor</title>
+<title>Post material</title>
 </head>
 <body>
 
@@ -62,50 +60,42 @@
 <?php    
     }
 ?>
-<h1>Assign Mentor List</h1><br>
+<h1>Post Material</h1><br>
 <?php
     if($message != "") {echo $message;}
 ?>
-<table border="1">
-    <tr>
-        <th>Mentor Name</th>
-        <th>Grade </th>
-        <th>Assign</th>
-    </tr>
-    <?php
 
-        $key = 0;
-        $setBtn = "setBtn".$key;
-        $result = mysqli_query($con,$query_view_mtor);
-        if(mysqli_num_rows($result)>0) {
-            while($row = mysqli_fetch_array($result)) {
-                //store section info---------------
-                $info = array(
-                    $row["uid"],
-                    $row["name"],
-                    $row["grade"],
-                );
-               
-                $_SESSION["info".$key] = $info;
-                
-                echo '<tr> 
-                        <td>'.$row["name"].'</td>
-                        <td>'.translate_grade($row["grade"]).'</td>
-                        <td><form action="" method="POST">
-                                <input type="submit" name="'.$setBtn.'" value="Assign"/>
-                            </form>
-                        </td>
-                    </tr>';
+    <form action="" method="post">
+           <table>
+                <tr>
+                    <td><input type="text" name="smTitle" placeholder="enter book title"/></td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="author" placeholder="enter the author"/></td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="type" placeholder="enter book type"/></td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="URL" placeholder="enter book URL"/></td>
+                </tr>
+                <tr>
+                    <td><input type="date" name="date" placeholder="enter assigned date"/></td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="notes" placeholder="enter notes"/></td>
+                </tr>
+                <tr>
+                    <td><input type="submit" value="submit"/></td>
+                </tr>
+            </table>
+    </form>
+    
+<?php
+    //show study materials info for specific session
+?>
 
-                $_SESSION["setInfo".$key] = $info; 
-                $key++;
-                $setBtn = "setBtn".$key;
-            
-            }
-            $_SESSION['setKey'] = $key;
-        }
-    ?>
-</table>
+
 </body>
 </html>
 
