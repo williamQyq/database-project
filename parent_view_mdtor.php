@@ -120,7 +120,7 @@
             $_SESSION["assinfo".$key] = $info;
             $key++;
             $assignBtn = "assBtn".$key;
-            $postBtn = "posBtn".$key;
+            $postBtn = "postBtn".$key;
         }
         $_SESSION['postkey'] = $key;
         $_SESSION['asskey'] = $key;

@@ -14,6 +14,7 @@
             $cid = $_SESSION["assinfo".$btn_key][0];
             $title = $_SESSION["assinfo".$btn_key][1];
             $sec_id = $_SESSION["assinfo".$btn_key][2];
+            echo $_SESSION["assinfo".$btn_key][1];
         }
     }
 
@@ -32,7 +33,7 @@
                     $message = "Fail to insert study material";
                 }
                 $sm_id = mysqli_insert_id($con);
-
+                
                 $query_insert_textUsed = "INSERT INTO textUsed VALUES ('$cid','$title','$sec_id','$sm_id')";
                 $result = mysqli_query($con,$query_insert_textUsed);
                 if(!$result){

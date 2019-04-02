@@ -1,0 +1,84 @@
+ $query_view_mtor = "SELECT u.uid, u.name, s.grade FROM users u NATURAL JOIN mentors m NATURAL JOIN students s WHERE u.uid = m.mtor_id AND m.mtor_id = s.stu_id";
+ $query_check_mentor = "SELECT * FROM teach WHERE cid = '$cid' AND title = '$title' AND sec_id = '$sec_id' AND mtor_id = '$uid'";
+ $query_insert_teach = "INSERT INTO teach (cid, title, sec_id, mtor_id) VALUES('$cid','$title','$sec_id','$uid')";
+ $query_view_child = "SELECT u.uid, u.emailAddress, u.name, u.phoneNumber FROM users u, custody c 
+13,13:    $query_check_duplicate = "SELECT * FROM users WHERE username = '" . $_POST["email"] . "' ";
+29,13:    $query_check_par = "SELECT emailAddress FROM users WHERE users.emailAddress = '$parentEmail'";
+37,17:    $query_insert_user = "INSERT INTO users (username, password, name, emailAddress, phoneNumber) VALUES ('$email', '$password', '$name', '$email', '$phoneNumber')";
+52,17:    $query_insert_custody = "INSERT INTO custody (par_id, stu_id) SELECT u.uid, s.stu_id FROM users u, students s
+59,5:     $query_select_ses_with_less_2_mtor = "SELECT m.cid, m.title, m.sec_id, m.ses_id FROM
+                                   (SELECT t.mtor_id,s.cid,s.title,s.sec_id,s.ses_id
+                                    FROM teach t NATURAL JOIN sessions s 
+                                    WHERE t.cid = s.cid AND t.title = s.title AND t.sec_id = s.sec_id) AS m
+                             GROUP BY m.cid, m.title, m.sec_id, m.ses_id
+                             HAVING COUNT(m.mtor_id)<2";
+11,9:         $query_select_user = "SELECT * FROM users WHERE username = '" . $_POST["username"] . "' and password = '" . $_POST["password"] . "'";
+12,5:     $query_update_user = "UPDATE users SET username='" . $_POST["email"] . "', 
+18,5:     $query_insert_user = "INSERT INTO users (username, password, name, emailAddress, phoneNumber) VALUES ('$email', '$password', '$name', '$email', '$phoneNumber')";
+11,9:         $query_check_duplicate = "SELECT * FROM users WHERE username = '" . $_POST["email"] . "' ";
+34,5:     $query_select_sec = "SELECT * FROM sections_belong";
+46,13:             $query_select_mdtors = "SELECT name FROM users NATURAL JOIN moderators m
+51,13:             $query_select_mtors = "SELECT name FROM users NATURAL JOIN mentors mt 
+28,17:                 $query_insert_sm = "INSERT INTO studyMaterials (title,author,type,URL,assignedDate,notes) VALUES ('$smTitle','$author','$type','$url','$date','$notes')";
+36,17:                 $query_insert_textUsed = "INSERT INTO textUsed VALUES ('$cid','$title','$sec_id','$sm_id')";
+11,9:         $query_select_user = "SELECT * FROM users WHERE username = '" . $_POST["username"] . "' and password = '" . $_POST["password"] . "'";
+22,9:         $query_get_stu_grade ="SELECT grade FROM students, users WHERE uid = stu_id AND uid IN (SELECT uid FROM users WHERE username = '" . $_POST["username"] . "' and password = '" . $_POST["password"] . "')";
+12,5:     $query_update_user = "UPDATE users SET username='" . $_POST["email"] . "', 
+25,5:     $query_update_stu_grade = "UPDATE students SET grade='" . $_POST["grade"] . "' WHERE stu_id='". $id ."' ";
+20,5:     $query_check_par = "SELECT emailAddress FROM users WHERE users.emailAddress = '$parentEmail'";
+27,7:       $query_insert_user = "INSERT INTO users (username, password, name, emailAddress, phoneNumber) VALUES ('$email', '$password', '$name', '$email', '$phoneNumber')";
+42,7:       $query_insert_custody = "INSERT INTO custody (par_id, stu_id) SELECT u.uid, s.stu_id FROM users u, students s
+11,9:         $query_check_duplicate = "SELECT * FROM users WHERE username = '" . $_POST["email"] . "' ";
+28,5:     $query_select_sec = "SELECT * FROM sections_belong s NATURAL JOIN teach t WHERE t.mtor_id = '$id'
+43,13:             $query_select_mtors = "SELECT name, grade FROM users NATURAL JOIN students 
+48,13:             $query_select_mtees = "SELECT DISTINCT users.name, students.grade FROM users, students, enroll 
+8,5:     $query_view_sec = "SELECT * FROM courses NATURAL JOIN sections_belong NATURAL JOIN timeSlot";
+24,13:             $query_check_teach = "SELECT * FROM teach WHERE cid = '$cid' AND title = '$title' AND sec_id = '$sec_id' AND mtor_id = '$id'";
+25,13:             $query_check_enroll = "SELECT * FROM enroll WHERE cid = '$cid' AND title = '$title' AND sec_id = '$sec_id' AND mtee_id = '$id'";
+38,25:                         $query_insert_teach = "INSERT INTO teach(cid, title, sec_id, mtor_id) VALUES('$cid','$title','$sec_id','$id')";
+61,25:                         $query_insert_enroll = "INSERT INTO enroll(cid, title, sec_id, mtee_id) VALUES('$cid','$title','$sec_id','$id')";
+123,17:                 $query_count_mtor = "SELECT COUNT(mtor_id) FROM teach WHERE teach.cid = '$row[cid]'
+126,17:                 $query_count_mtee = "SELECT COUNT(mtee_id) FROM enroll WHERE enroll.cid = '$row[cid]'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
